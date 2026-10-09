@@ -23,7 +23,8 @@ func initializeConfig(cmd *cobra.Command, args []string) error {
 	// Acceptable paths for config file
 	v.AddConfigPath("/etc/cc2md")
 	v.AddConfigPath("$HOME/.config/cc2md")
-	v.AddConfigPath(".")
+	// No "." path: cc2md runs from Claude Code hooks inside arbitrary
+	// repositories, which must not be able to redirect its output.
 
 	if err := v.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
